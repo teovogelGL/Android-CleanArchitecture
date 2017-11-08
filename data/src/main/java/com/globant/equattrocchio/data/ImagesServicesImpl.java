@@ -1,5 +1,6 @@
 package com.globant.equattrocchio.data;
 
+import com.globant.equattrocchio.data.response.Image;
 import com.globant.equattrocchio.data.response.Result;
 import com.globant.equattrocchio.data.service.api.SplashbaseApi;
 import com.globant.equattrocchio.domain.service.ImagesServices;
@@ -16,7 +17,7 @@ public class ImagesServicesImpl implements ImagesServices {
     private static final String URL= "http://splashbase.co/";
 
     @Override
-    public void getLatestImages(Observer<Boolean> observer) {
+    public void getLatestImages(final Observer<String> observer) {
         Retrofit retrofit = new Retrofit.Builder().
                 baseUrl(URL).
                 addConverterFactory(GsonConverterFactory.create())
@@ -29,12 +30,15 @@ public class ImagesServicesImpl implements ImagesServices {
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                //todo: show the response.body() on the ui
+                observer.onComplete();
+                for (Image i : response.body().getImages()) {
+                    observer.onNext(i.toString());
+                }
             }
 
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
-                //todo: update the UI with a connection error message
+                observer.onError(t);
             }
         });
 
