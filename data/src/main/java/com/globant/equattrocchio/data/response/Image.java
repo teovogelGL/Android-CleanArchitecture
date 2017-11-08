@@ -49,4 +49,8 @@ public class Image {
         this.sourceId = sourceId;
     }
 
+    public String toString () {
+        return id + ", " + url + ", " + largeUrl + ", " + sourceId;
+    }
+
 }
