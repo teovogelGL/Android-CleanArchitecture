@@ -1,12 +1,17 @@
 package com.globant.equattrocchio.cleanarchitecture.mvp.presenter;
 
 import android.app.Activity;
+import android.util.Log;
 
+import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.ImagesView;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServiceButtonObserver;
 import com.globant.equattrocchio.data.ImagesServicesImpl;
 import com.globant.equattrocchio.domain.GetLatestImagesUseCase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DefaultObserver;
@@ -17,16 +22,21 @@ public class ImagesPresenter {
     private ImagesView view;
     private GetLatestImagesUseCase getLatestImagesUseCase;
 
+    private AdapterImage adapterImage;
+    private List<String> imagesUrls;
+
 
     public ImagesPresenter(ImagesView view, GetLatestImagesUseCase getLatestImagesUseCase) {
         this.view = view;
         this.getLatestImagesUseCase = getLatestImagesUseCase;
+
+        adapterImage = new AdapterImage(this);
+        imagesUrls = new ArrayList<String>();
     }
 
     public void onCountButtonPressed() {
 
         view.showText(new String(""));//todo: aca va el string que me devuelva el execute del usecase
-
 
     }
 
@@ -35,7 +45,7 @@ public class ImagesPresenter {
         getLatestImagesUseCase.execute(new DisposableObserver<String>() {
             @Override
             public void onNext(@NonNull String aString) {
-                view.addImage(aString);
+                imagesUrls.add(aString);
             }
 
             @Override
@@ -45,7 +55,8 @@ public class ImagesPresenter {
 
             @Override
             public void onComplete() {
-                view.clearLabel();
+                adapterImage = new AdapterImage(ImagesPresenter.this);
+                view.setAdapter(adapterImage);
             }
         },null);
 
@@ -59,7 +70,13 @@ public class ImagesPresenter {
     }
 
 
+    public void populateViewHolder (AdapterImage.ViewHolder holder, int position) {
+        Log.d("ImagesPresenter", "populating " + position);
+    }
 
+    public int getAdapterSize () {
+        return imagesUrls.size();
+    }
 
 
 

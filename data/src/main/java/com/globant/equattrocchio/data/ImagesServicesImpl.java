@@ -30,10 +30,10 @@ public class ImagesServicesImpl implements ImagesServices {
         call.enqueue(new Callback<Result>() {
             @Override
             public void onResponse(Call<Result> call, Response<Result> response) {
-                observer.onComplete();
                 for (Image i : response.body().getImages()) {
-                    observer.onNext(i.toString());
+                    observer.onNext(i.getUrl());
                 }
+                observer.onComplete();
             }
 
             @Override
