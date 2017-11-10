@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import com.globant.equattrocchio.cleanarchitecture.R;
 import com.globant.equattrocchio.cleanarchitecture.mvp.presenter.ImagesPresenter;
 
-import java.util.List;
-
 public class AdapterImage extends
         RecyclerView.Adapter<AdapterImage.ViewHolder> {
 

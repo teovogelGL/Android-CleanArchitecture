@@ -1,21 +1,16 @@
 package com.globant.equattrocchio.cleanarchitecture.mvp.presenter;
 
 import android.app.Activity;
-import android.util.Log;
-
-import com.bumptech.glide.Glide;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.ImagesView;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServiceButtonObserver;
-import com.globant.equattrocchio.data.ImagesServicesImpl;
 import com.globant.equattrocchio.domain.GetLatestImagesUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DefaultObserver;
 import io.reactivex.observers.DisposableObserver;
 
 public class ImagesPresenter {
@@ -24,7 +19,7 @@ public class ImagesPresenter {
     private GetLatestImagesUseCase getLatestImagesUseCase;
 
     private AdapterImage adapterImage;
-    private List<String> imagesUrls;
+    private List<String> imagesUrls; //TODO: this should go in another class? Maybe model
 
 
     public ImagesPresenter(ImagesView view, GetLatestImagesUseCase getLatestImagesUseCase) {
