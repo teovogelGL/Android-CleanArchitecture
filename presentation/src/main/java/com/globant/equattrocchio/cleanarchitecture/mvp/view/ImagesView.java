@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.globant.equattrocchio.cleanarchitecture.R;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
@@ -41,15 +42,18 @@ public class ImagesView extends ActivityView {
         tvlabel.setText(R.string.connection_error);
     }
 
-    public void addImage(String s) {
-        tvlabel.setText(tvlabel.getText() + "\n\n" + s);
-    }
-
     public void clearLabel () {
         tvlabel.setText("");
     }
 
     public void setAdapter (AdapterImage adapter) {
         recyclerView.setAdapter(adapter);
+    }
+
+    public void populateViewHolder (AdapterImage.ViewHolder holder, String url) {
+        Glide
+            .with(getActivity().getApplicationContext())
+            .load(url)
+            .into(holder.image);
     }
 }

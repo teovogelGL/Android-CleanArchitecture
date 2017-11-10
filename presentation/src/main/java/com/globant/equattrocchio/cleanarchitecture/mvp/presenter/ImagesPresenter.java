@@ -3,6 +3,7 @@ package com.globant.equattrocchio.cleanarchitecture.mvp.presenter;
 import android.app.Activity;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.ImagesView;
@@ -71,7 +72,7 @@ public class ImagesPresenter {
 
 
     public void populateViewHolder (AdapterImage.ViewHolder holder, int position) {
-        Log.d("ImagesPresenter", "populating " + position);
+        view.populateViewHolder(holder, imagesUrls.get(position));
     }
 
     public int getAdapterSize () {
