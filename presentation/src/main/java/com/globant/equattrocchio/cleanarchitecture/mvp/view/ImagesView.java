@@ -10,6 +10,7 @@ import com.globant.equattrocchio.cleanarchitecture.R;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServiceButtonObserver;
+import com.globant.equattrocchio.domain.Image;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,10 +48,12 @@ public class ImagesView extends ActivityView {
         recyclerView.setAdapter(adapter);
     }
 
-    public void populateViewHolder (AdapterImage.ViewHolder holder, String url) {
+    public void populateViewHolder (AdapterImage.ViewHolder holder, Image image) {
         Glide
             .with(getActivity().getApplicationContext())
-            .load(url)
+            .load(image.getUrl())
             .into(holder.image);
+
+        holder.id.setText(String.valueOf(image.getId()));
     }
 }

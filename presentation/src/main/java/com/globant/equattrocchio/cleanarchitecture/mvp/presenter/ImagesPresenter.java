@@ -6,6 +6,7 @@ import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.ImagesView;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServiceButtonObserver;
 import com.globant.equattrocchio.domain.GetLatestImagesUseCase;
+import com.globant.equattrocchio.domain.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ImagesPresenter {
     private GetLatestImagesUseCase getLatestImagesUseCase;
 
     private AdapterImage adapterImage;
-    private List<String> imagesUrls; //TODO: this should go in another class? Maybe model
+    private List<Image> images; //TODO: this should go in another class? Maybe model
 
 
     public ImagesPresenter(ImagesView view, GetLatestImagesUseCase getLatestImagesUseCase) {
@@ -27,7 +28,7 @@ public class ImagesPresenter {
         this.getLatestImagesUseCase = getLatestImagesUseCase;
 
         adapterImage = new AdapterImage(this);
-        imagesUrls = new ArrayList<String>(); //TODO: list of id's
+        images = new ArrayList<Image>();
     }
 
     public void onCountButtonPressed() {
@@ -38,10 +39,10 @@ public class ImagesPresenter {
 
     private void onCallServiceButtonPressed() {
 
-        getLatestImagesUseCase.execute(new DisposableObserver<String>() {
+        getLatestImagesUseCase.execute(new DisposableObserver<Image>() {
             @Override
-            public void onNext(@NonNull String aString) {
-                imagesUrls.add(aString);
+            public void onNext(@NonNull Image image) {
+                images.add(image);
             }
 
             @Override
@@ -67,11 +68,11 @@ public class ImagesPresenter {
 
 
     public void populateViewHolder (AdapterImage.ViewHolder holder, int position) {
-        view.populateViewHolder(holder, imagesUrls.get(position)); //TODO: id
+        view.populateViewHolder(holder, images.get(position)); //TODO: id
     }
 
     public int getAdapterSize () {
-        return imagesUrls.size();
+        return images.size();
     }
 
 
