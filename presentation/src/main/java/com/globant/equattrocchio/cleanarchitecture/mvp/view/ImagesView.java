@@ -1,11 +1,16 @@
 package com.globant.equattrocchio.cleanarchitecture.mvp.view;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.globant.equattrocchio.cleanarchitecture.R;
+import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServiceButtonObserver;
+import com.globant.equattrocchio.domain.Image;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,10 +19,12 @@ import butterknife.OnClick;
 public class ImagesView extends ActivityView {
 
     @BindView(R.id.tv_incoming_json) TextView tvlabel;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     public ImagesView(AppCompatActivity activity) {
         super(activity);
         ButterKnife.bind(this, activity);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
     }
 
     public void showText(String text) {
@@ -31,5 +38,22 @@ public class ImagesView extends ActivityView {
 
     public void showError() {
         tvlabel.setText(R.string.connection_error);
+    }
+
+    public void clearLabel () {
+        tvlabel.setText("");
+    }
+
+    public void setAdapter (AdapterImage adapter) {
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void populateViewHolder (AdapterImage.ViewHolder holder, Image image) {
+        Glide
+            .with(getActivity().getApplicationContext())
+            .load(image.getUrl())
+            .into(holder.image);
+
+        holder.id.setText(String.valueOf(image.getId()));
     }
 }

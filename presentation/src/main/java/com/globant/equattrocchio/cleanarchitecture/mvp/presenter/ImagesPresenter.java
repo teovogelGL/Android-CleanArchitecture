@@ -1,15 +1,17 @@
 package com.globant.equattrocchio.cleanarchitecture.mvp.presenter;
 
 import android.app.Activity;
-
+import com.globant.equattrocchio.cleanarchitecture.mvp.view.adapter.AdapterImage;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.RxBus;
 import com.globant.equattrocchio.cleanarchitecture.mvp.view.ImagesView;
 import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServiceButtonObserver;
-import com.globant.equattrocchio.data.ImagesServicesImpl;
 import com.globant.equattrocchio.domain.GetLatestImagesUseCase;
+import com.globant.equattrocchio.domain.Image;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
-import io.reactivex.observers.DefaultObserver;
 import io.reactivex.observers.DisposableObserver;
 
 public class ImagesPresenter {
@@ -17,25 +19,30 @@ public class ImagesPresenter {
     private ImagesView view;
     private GetLatestImagesUseCase getLatestImagesUseCase;
 
+    private AdapterImage adapterImage;
+    private List<Image> images; //TODO: this should go in another class? Maybe model
+
 
     public ImagesPresenter(ImagesView view, GetLatestImagesUseCase getLatestImagesUseCase) {
         this.view = view;
         this.getLatestImagesUseCase = getLatestImagesUseCase;
+
+        adapterImage = new AdapterImage(this);
+        images = new ArrayList<Image>();
     }
 
     public void onCountButtonPressed() {
 
         view.showText(new String(""));//todo: aca va el string que me devuelva el execute del usecase
 
-
     }
 
     private void onCallServiceButtonPressed() {
 
-        getLatestImagesUseCase.execute(new DisposableObserver<Boolean>() {
+        getLatestImagesUseCase.execute(new DisposableObserver<Image>() {
             @Override
-            public void onNext(@NonNull Boolean aBoolean) {
-                loadFromPreferences();
+            public void onNext(@NonNull Image image) {
+                images.add(image);
             }
 
             @Override
@@ -45,7 +52,8 @@ public class ImagesPresenter {
 
             @Override
             public void onComplete() {
-                new ImagesServicesImpl().getLatestImages(null);
+                adapterImage = new AdapterImage(ImagesPresenter.this);
+                view.setAdapter(adapterImage);
             }
         },null);
 
@@ -59,7 +67,13 @@ public class ImagesPresenter {
     }
 
 
+    public void populateViewHolder (AdapterImage.ViewHolder holder, int position) {
+        view.populateViewHolder(holder, images.get(position)); //TODO: id
+    }
 
+    public int getAdapterSize () {
+        return images.size();
+    }
 
 
 
