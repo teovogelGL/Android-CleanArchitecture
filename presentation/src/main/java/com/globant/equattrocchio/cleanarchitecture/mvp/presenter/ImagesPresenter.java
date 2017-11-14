@@ -27,7 +27,7 @@ public class ImagesPresenter {
         this.getLatestImagesUseCase = getLatestImagesUseCase;
 
         adapterImage = new AdapterImage(this);
-        imagesUrls = new ArrayList<String>();
+        imagesUrls = new ArrayList<String>(); //TODO: list of id's
     }
 
     public void onCountButtonPressed() {
@@ -67,7 +67,7 @@ public class ImagesPresenter {
 
 
     public void populateViewHolder (AdapterImage.ViewHolder holder, int position) {
-        view.populateViewHolder(holder, imagesUrls.get(position));
+        view.populateViewHolder(holder, imagesUrls.get(position)); //TODO: id
     }
 
     public int getAdapterSize () {

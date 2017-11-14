@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.globant.equattrocchio.cleanarchitecture.R;
 import com.globant.equattrocchio.cleanarchitecture.mvp.presenter.ImagesPresenter;
@@ -16,11 +17,13 @@ public class AdapterImage extends
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image;
+        public TextView id;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             image = (ImageView) itemView.findViewById(R.id.image);
+            id = (TextView) itemView.findViewById(R.id.text_image_id);
         }
     }
 
